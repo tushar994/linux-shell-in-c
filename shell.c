@@ -43,8 +43,27 @@ int main(){
         else if(strcmp(words[0],"ls")==0){
             list(words, index-1,starting_working_directory);
         }
+        else if(strcmp(words[0],"pinfo")==0){
+            print_pinfo(words, index-1);
+        }
         else{
-            printf("%s",input);
+
+            int status;
+            pid_t forkReturn = fork();
+            if(forkReturn <0){
+                printf("invalid\n");
+                // return 1;
+            }
+            else if (forkReturn == 0){
+                // child
+                execvp(words[0],words);
+                return 0;
+            }
+            else{
+                // parentWUNTRACED
+                pid_t okay = waitpid(forkReturn, &status,  WNOHANG );
+                printf("%d\n",okay);
+            }
         }
     }
 }

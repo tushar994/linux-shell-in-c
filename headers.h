@@ -12,10 +12,13 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <sys/wait.h>
+#include <fcntl.h> 
 
 #include "get_prompt.h"
 #include "echo.h"
 #include "change_dir.h"
 #include "ls.h"
+#include "pinfo.h"
 
 #endif

@@ -50,7 +50,7 @@ int print_hardlinks(char* name){
     struct stat fileStat;
     int okay1 = stat(name, &fileStat);
 
-    printf("%d", fileStat.st_nlink);
+    printf("%d\t", fileStat.st_nlink);
     return 0;
 }
 int print_user_group(char* name){
@@ -60,11 +60,11 @@ int print_user_group(char* name){
     // statBuf.st_gid;
     struct passwd *pws;
     pws = getpwuid(fileStat.st_uid);
-    printf("%s ",pws->pw_name);
+    printf("%s\t",pws->pw_name);
     struct group *pws2;
     // printf("bruh\n");
     pws2 = getgrgid(fileStat.st_gid);
-    printf("%s",pws2->gr_name);
+    printf("%s\t",pws2->gr_name);
     return 0;
 }
 
@@ -72,7 +72,7 @@ int print_size(char* name){
     struct stat fileStat;
     int okay1 = stat(name, &fileStat);
     
-    printf("%lld",fileStat.st_size);
+    printf("%lld\t",fileStat.st_size);
     return 0;
 }
 
@@ -81,9 +81,31 @@ int print_date(char*name){
     stat(name, &attrib);
     char time[100];
     strftime(time, 50, "%b %d %H:%M", localtime(&attrib.st_mtime));
-    printf ("%s", time);
+    printf ("%s\t", time);
     return 0;
 }
+
+int check_la(int* flag_l, int* flag_a, int index, char* path[]){
+    if(path[index][0]=='-'){
+        int len = strlen(path[index]);
+        if(len==2){
+            if(path[index][1]=='a'){
+                *flag_a = 1;
+            }  
+            else if(path[index][1]=='l'){
+                *flag_l=1;
+            }
+        }
+        else if(len==3){
+            if( (path[index][1]=='a' && path[index][2]=='l') || (path[index][2]=='a' && path[index][1]=='l') ){
+                *flag_l = 1;
+                *flag_a = 1;
+            }
+        }
+    }
+    return 1;
+}
+
 
 
 int list(char* path[], int n,char* starting_working_directory){
@@ -95,39 +117,24 @@ int list(char* path[], int n,char* starting_working_directory){
     int flag_a = 0;
     int flag_l= 0;
     int valid = 1;
+
+    
+
+
+
     // checking for flags
     if(n>1){
-        if(path[1][0]=='-'){
-            int len = strlen(path[1]);
-            if(len==2){
-              if(path[1][1]=='a'){
-                  flag_a = 1;
-              }  
-              else if(path[1][1]=='l'){
-                  flag_l=1;
-              }
-            }
-            else if(len==3){
-                if( (path[1][1]=='a' && path[1][2]=='l') || (path[1][2]=='a' && path[1][1]=='l') ){
-                    flag_l = 1;
-                    flag_a = 1;
-                }
-                // else{
-                //     printf("flags not supported\n");
-                //     return 1;
-                // }
-            }
-        }
+    // for the ".. -l" or ". -l" case (its so gay OMG)
+        check_la(&flag_l, &flag_a, 1, path);
         if(n>2){
-            if(path[2][0]=='-'){
-                int len = strlen(path[2]);
-                if(len==2){
-                    if(path[2][1]=='a'){
-                        flag_a = 1;
-                    }  
-                    else if(path[2][1]=='l'){
-                        flag_l=1;
-                    }
+            check_la(&flag_l, &flag_a, 2, path);
+            int broo = strlen(path[1]);
+            if(broo<=2 && path[1][0]=='.'){
+                if(broo==2 && path[1][1]=='.'){
+                    chdir("..");
+                }
+                if(n>3){
+                    check_la(&flag_l, &flag_a, 3, path);
                 }
             }
         }
@@ -137,7 +144,7 @@ int list(char* path[], int n,char* starting_working_directory){
         return 1;
     }
 
-    printf("l: %d, a: %d\n",flag_l,flag_a);
+    // printf("l: %d, a: %d\n",flag_l,flag_a);
     // to get the path if it exists
     if(n>1){
         int path_len = strlen(path[n-1]);
@@ -161,36 +168,43 @@ int list(char* path[], int n,char* starting_working_directory){
     while ((de = readdir(dr)) != NULL){
         // first we see if we need to print it
         if( !(!flag_a && de->d_name[0]=='.')  ){
-            // checks if its a directory and if it is, then it prints a d else prints a -
-            check_if_dir(de->d_name);
-            // prints permissions
-            print_permissions(de->d_name);
-            printf(" ");
-            // prints the number of hard links
-            print_hardlinks(de->d_name);
-            printf(" ");
-            print_user_group(de->d_name);
-            printf(" ");
-            print_size(de->d_name);
-            printf(" ");
-            print_date(de->d_name);
+            if(flag_l){
+                // checks if its a directory and if it is, then it prints a d else prints a -
+                check_if_dir(de->d_name);
+                // prints permissions
+                print_permissions(de->d_name);
+                printf("\t");
+                // prints the number of hard links
+                print_hardlinks(de->d_name);
 
-            printf(" %s", de->d_name);
+                // print username and groupname
+                print_user_group(de->d_name);
+
+                // print size of file
+                print_size(de->d_name);
+
+                // print date of last modification
+                print_date(de->d_name);
+            }
 
 
 
-            // if we need l then each one gets it's own thing
+
+            //if we need l then each one gets it's own thing
             // if(flag_l){
-                printf("\n");
+                printf("%s\n", de->d_name);
+                // printf("\n");
             // }
             // else{
-            //     printf(" ");
+                // printf("%s\t", de->d_name);
+                // printf("\t");
             // }
         }
     } 
     printf("\n");
-  
+    // printf("flag_l : %d, flag_a : %d\n",flag_l,flag_a);
     closedir(dr);     
     chdir(starting_working_directory);
     return 0; 
 };
+
