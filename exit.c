@@ -17,7 +17,7 @@ int exit_shell(){
             }
         }
         else{
-            perror(copy->pid);
+            perror("exitting");
             flag = 1;
         }
         copy = copy->next;

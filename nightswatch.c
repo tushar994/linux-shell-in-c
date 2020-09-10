@@ -28,7 +28,7 @@ int handle_night(char* path[], int n,char* starting_working_directory,char* comm
             nighwatch_interrupt(5);
         }
         else if(strcmp(path[1],"newborn")==0){
-
+            nighwatch_newborn(5);
         }
         else{
             printf("not a valid command\n");
@@ -43,19 +43,21 @@ int handle_night(char* path[], int n,char* starting_working_directory,char* comm
         int number = 0;
         int number_len = strlen(path[2]);
         for(int i=0;i<number_len;i++){
+            number*=10;
             int digit = (int)path[2][i] - (int)'0';
             if(digit>9||digit<0){
                 printf("not a valid number");
                 return 1;
             }
             number+=digit;
-            number*=10;
+            // number*=10;
         }
+        printf("%d\n",number);
         if(strcmp(path[3],"interrupt")==0){
-
+            nighwatch_interrupt(number);
         }
         else if(strcmp(path[3],"newborn")==0){
-
+            nighwatch_newborn(number);
         }
         else{
             printf("not a valid command\n");
@@ -87,7 +89,7 @@ int has_q_pressed(){
     int return_val = select(1,&fds,NULL,NULL,&tm);
     if(return_val){
         char c = fgetc(stdin);
-        char d = fgetc(stdin);
+        // char d = fgetc(stdin);
         if(c=='q'){
             return 1;
         }
@@ -138,6 +140,36 @@ int nighwatch_interrupt(int wait){
             }
         }
         fclose(f_read);
+        int continue_maybe = delay(wait*1000);
+        if(continue_maybe){
+            return 0;
+        }
+    }
+}
+
+
+int nighwatch_newborn(int wait){
+    while(1){
+        FILE* f_read = fopen("/proc/loadavg", "r");
+        if(f_read==NULL){
+            perror("interrupts");
+            return 1;
+        }
+        char store[1024];
+        // prints the CPUS
+        fgets(store, 1000, f_read);
+        char* words[10];
+        words[0] = strtok(store, " ");
+        int index = 1;
+        while(words[index-1]!=NULL){
+            words[index] = strtok(NULL, " ");
+            index++;
+        }
+        // for(int i=0;i<index-1;i++){
+        //     printf("%s ",words[i]);
+        // }
+
+        printf("%s",words[index-2]);
         int continue_maybe = delay(wait*1000);
         if(continue_maybe){
             return 0;

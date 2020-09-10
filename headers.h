@@ -16,6 +16,8 @@
 #include <fcntl.h> 
 #include <time.h> 
 #include <sys/select.h>
+#include <signal.h>
+
 
 #include "get_prompt.h"
 #include "echo.h"

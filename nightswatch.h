@@ -3,6 +3,7 @@
 
 int handle_night(char* path[], int n,char* starting_working_directory,char* command);
 int nighwatch_interrupt(int wait);
+int nighwatch_newborn(int wait);
 int delay(int seconds);
 int has_q_pressed();
 

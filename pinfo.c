@@ -18,7 +18,7 @@ int print_pinfo(char* path[], int n){
     }
 
     strcat(stat_path, "/stat");
-    int stat_line = fopen(stat_path, "r"); 
+    FILE* stat_line = fopen(stat_path, "r"); 
     // printf("%s\n",stat_path);
     if(stat_line==NULL){
         perror("pinfo: ");

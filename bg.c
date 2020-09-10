@@ -41,7 +41,7 @@ void handler(int sig)
     // write(STDOUT_FILENO, "bruh1\n ", strlen("bruh1\n "));
     if(copy!=NULL){
         // write(STDOUT_FILENO, "bruh\n ", strlen("bruh\n "));
-        printf("%s with pid %d exited with code %d\n", copy->command, copy->pid, w_st);
+        fprintf(stderr, "%s with pid %d exited with code %d\n", copy->command, copy->pid, w_st);
         struct bg_process* next = copy->next;
         struct bg_process* previous = copy->previous;
 
@@ -49,7 +49,9 @@ void handler(int sig)
         if(next!=NULL){
             next->previous = previous;
         }
+        // printf("what\n");
         free(copy);
+        // printf("what\n");
     }
 
 }
@@ -71,7 +73,7 @@ int bg(char* path[], int n,char* starting_working_directory,char* command){
             perror(path[0]);
         }
 
-        return 0;
+        _exit(0);
     }
     else{
         setpgid(forkReturn,0);
