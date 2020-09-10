@@ -38,6 +38,7 @@ int main(){
         input_index--;
         for(int w = 0;w<input_index;w++){
             char* words[1000];
+            int length_current_command = strlen(input[w]);
             words[0] = strtok(input[w], " ");
             // index will ccontain the number of arguments +1
             int index = 1;
@@ -45,7 +46,8 @@ int main(){
                 words[index] = strtok(NULL, " ");
                 index++;
             }
-            if(length_input==1){}
+            if(words[0]==NULL){}
+            else if(length_current_command==1){}
             else if(strcmp(words[0],"exit")==0){
                 int outcome = exit_shell();
                 if(outcome==0){

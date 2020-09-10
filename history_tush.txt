@@ -1,20 +1,20 @@
-sleep 1 &;sleep 1
-ps
-exit
-sleep 0.5 &; sleep 1
-sleep 0.5 &;sleep 1
-sleep 1 &;sleep 1
-history
-exit
-ls ; pwd
-ls ; cd .. ; ls ; cd ~
-ls ; ls-l
-ls;ls -l
-ls -la
-ls ; ls;
-ls
-ls
 ls -la
 ls . -la
 ls .. -la
 exit
+nightswatch interrupt
+ls;
+ls ; 
+ls ; 
+ls ;        
+vim &
+ps
+exit
+
+
+
+
+
+
+sleep 1 &
+ls   ;   echo dgewifug wgeoofugwef wegf; ls -la ;  echo "gwufg      hwouwfh" ; 
