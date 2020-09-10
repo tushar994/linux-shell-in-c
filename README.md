@@ -35,7 +35,7 @@ inside the program. This kills all bbackground processes created by the program 
 - `bg.c` : where background processes are created, and where the SIGCHLD handler exists
 - `fg.c` : where the foreground process runs from
 - `change_dir.c` : where cd is implemented
-- `echo.c` : where echo is implemented. echo handles "<string>" and '<string>' along with just a normal echo <string> just like how normal terminal handle it
+- `echo.c` : where echo is implemented.
 - `exit.c` : where the exit function is implemented
 - `get_prompt.c` : where pwd and printing the prompt is implemented
 - `history.c` : this creates a file called `history_tush.txt` WHEREVER THE TERMINAL IS RUN FROM. So if you run it from two different locations, it gives different histories for them.
@@ -46,7 +46,7 @@ inside the program. This kills all bbackground processes created by the program 
 
 ## in-build commands
 
--`pwd`, `cd`, `echo` are in-built. echo accounts for "" and '' and gives standard output for these.
+-`pwd`, `cd`, `echo` are in-built.
 - `ls [-la]` is in-built. Even if `[-l]` is not specified, it outputs the file names in a column.
 - `pinfo [pid(optional)]` is in-built.
 - `history [number (optional)]` is in-built. by default it gives the last 10. if it has to give n previous commands, but it has stored less commands, then it outputs all the commands it can output. Number has to be a two-digit (or one-digit) number.
