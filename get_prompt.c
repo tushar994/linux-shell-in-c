@@ -68,12 +68,13 @@ void print_pwd(char* starting_working_directory){
 // this uses the above functions to print the prompt
 void print_prompt(char* starting_working_directory){
     
+    printf("<");
     find_username();
     printf("@");
     find_systemname();
-
+    printf(":");
     print_pwd(starting_working_directory);
     // printf(" %s",starting_working_directory);
-    printf(" >\n");
+    printf(">\n");
 }
 

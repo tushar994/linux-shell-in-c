@@ -29,7 +29,7 @@ int print_pinfo(char* path[], int n){
 
     char* okay = fgets(stat_info, 1000, stat_line );
     if(okay==NULL){
-        perror("pinfo: ");
+        perror("pinfo");
         return 1;
     }
 

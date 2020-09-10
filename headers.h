@@ -14,11 +14,20 @@
 #include <time.h>
 #include <sys/wait.h>
 #include <fcntl.h> 
+#include <time.h> 
+#include <sys/select.h>
 
 #include "get_prompt.h"
 #include "echo.h"
 #include "change_dir.h"
 #include "ls.h"
 #include "pinfo.h"
+#include "bg.h"
+#include "fg.h"
+#include "history.h"
+#include "exit.h"
+#include "nightswatch.h"
+
+struct bg_process* first_bg;
 
 #endif

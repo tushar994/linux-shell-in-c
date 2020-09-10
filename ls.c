@@ -78,9 +78,18 @@ int print_size(char* name){
 
 int print_date(char*name){
     struct stat attrib;
+    struct tm time_last,time_present;
+    time_t present = time(NULL);
     stat(name, &attrib);
     char time[100];
-    strftime(time, 50, "%b %d %H:%M", localtime(&attrib.st_mtime));
+    localtime_r(&attrib.st_mtime, &time_last);
+    localtime_r(&present, &time_present);
+    if(time_last.tm_year!= time_present.tm_year){
+        strftime(time, 50, "%b %d  %Y", localtime(&attrib.st_mtime));
+    }
+    else{
+        strftime(time, 50, "%b %d %H:%M", localtime(&attrib.st_mtime));
+    }
     printf ("%s\t", time);
     return 0;
 }
@@ -105,70 +114,73 @@ int check_la(int* flag_l, int* flag_a, int index, char* path[]){
     }
     return 1;
 }
-
-
-
-int list(char* path[], int n,char* starting_working_directory){
-    struct dirent *de;  // Pointer for directory entry 
-    char starting_working[1024];
-    getcwd(starting_working, sizeof(starting_working));
-
-
-    int flag_a = 0;
-    int flag_l= 0;
-    int valid = 1;
-
-    
-
-
-
-    // checking for flags
-    if(n>1){
-    // for the ".. -l" or ". -l" case (its so gay OMG)
-        check_la(&flag_l, &flag_a, 1, path);
-        if(n>2){
-            check_la(&flag_l, &flag_a, 2, path);
-            int broo = strlen(path[1]);
-            if(broo<=2 && path[1][0]=='.'){
-                if(broo==2 && path[1][1]=='.'){
-                    chdir("..");
-                }
-                if(n>3){
-                    check_la(&flag_l, &flag_a, 3, path);
-                }
+int check_if_path( int index, char* path[]){
+    if(path[index][0]=='-'){
+        int len = strlen(path[index]);
+        if(len==2){
+            if(path[index][1]=='a'){
+                return 0;
+            }  
+            else if(path[index][1]=='l'){
+                return 0;
+            }
+        }
+        else if(len==3){
+            if( (path[index][1]=='a' && path[index][2]=='l') || (path[index][2]=='a' && path[index][1]=='l') ){
+                return 0;
             }
         }
     }
-    if(n>4){
-        printf("wrong number of arguments");
-        return 1;
-    }
+    return 1;
+}
 
-    // printf("l: %d, a: %d\n",flag_l,flag_a);
-    // to get the path if it exists
-    if(n>1){
-        int path_len = strlen(path[n-1]);
-        if(path_len>3 || path[n-1][0]!='-'){
-            char* okay[2];
-            okay[1] = path[n-1];
-            change_dir(okay,2,starting_working_directory);
-        }
-    }
-
-    // opendir() returns a pointer of DIR type.  
+// prints size of the thing
+int size_of(int flag_a, int flag_l ){
+    struct dirent *de;
     DIR *dr = opendir("."); 
-  
+    long long int total =0;
+    // printf("reached here 2\n");
+
     if (dr == NULL)  // opendir returns NULL if couldn't open directory 
     { 
-        printf("Could not open current directory" ); 
+        perror("ls :"); 
         return 0; 
     } 
-  
+
     // for readdir() 
     while ((de = readdir(dr)) != NULL){
         // first we see if we need to print it
         if( !(!flag_a && de->d_name[0]=='.')  ){
             if(flag_l){
+                struct stat a;
+                stat(de->d_name, &a);
+                total += a.st_blocks;
+            }
+        }
+    } 
+    total = total/2;
+    printf("total %lld\n",total);
+    // printf("flag_l : %d, flag_a : %d\n",flag_l,flag_a);
+    closedir(dr); 
+}
+
+int print_it(int flag_a, int flag_l ){
+    struct dirent *de;
+    DIR *dr = opendir("."); 
+    // printf("reached here 2\n");
+
+    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
+    { 
+        perror("ls :"); 
+        return 0; 
+    } 
+
+    // for readdir() 
+    while ((de = readdir(dr)) != NULL){
+        // first we see if we need to print it
+        if( !(!flag_a && de->d_name[0]=='.')  ){
+            if(flag_l){
+
                 // checks if its a directory and if it is, then it prints a d else prints a -
                 check_if_dir(de->d_name);
                 // prints permissions
@@ -203,8 +215,60 @@ int list(char* path[], int n,char* starting_working_directory){
     } 
     printf("\n");
     // printf("flag_l : %d, flag_a : %d\n",flag_l,flag_a);
-    closedir(dr);     
-    chdir(starting_working_directory);
+    closedir(dr); 
+}
+
+
+int list(char* path[], int n,char* starting_working_directory){
+      // Pointer for directory entry 
+    char starting_working[1024];
+    getcwd(starting_working, sizeof(starting_working));
+    // printf("%s\n",starting_working);
+
+
+    int flag_a = 0;
+    int flag_l= 0;
+    int valid = 1;
+
+
+    // update flag_a, flag_l for each argument
+    for(int i=1;i<n;i++){
+        check_la(&flag_l,&flag_a,i,path);
+    }
+
+
+    int direct_given = 0;
+    for(int i=1;i<n;i++){
+
+        int path_len = strlen(path[i]);
+        int to_exec = 1;
+        if(check_if_path(i,path)){
+            // printf("reached here\n");
+            direct_given = 1;
+            char* okay[2];
+            okay[1] = path[i];
+            to_exec = change_dir(okay,2,starting_working_directory);
+        }
+        // printf("%d\n",to_exec);
+        if(to_exec==0){
+            // opendir() returns a pointer of DIR type. 
+            printf("info for : %s\n",path[i]);  
+            if(flag_l){
+                size_of( flag_a,  flag_l );
+            } 
+            print_it( flag_a,  flag_l);
+            chdir(starting_working);
+        }
+    }
+    // printf("%d\n",direct_given);
+    if(direct_given==0){
+        if(flag_l){
+            size_of( flag_a,  flag_l );
+        }
+        print_it( flag_a,  flag_l);
+        chdir(starting_working);
+    
+    }
     return 0; 
 };
 

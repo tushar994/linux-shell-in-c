@@ -19,40 +19,28 @@ int change_dir(char* argument[], int n, char* starting_working_directory){
             }
             final[len+len2-1]= '\0';
             // printf("final is : %s\n",final);
-            chdir(final);
+            int error = chdir(final);
+            if(error<0){
+                perror(argument[1]);
+                return 1;
+            }
             return 0;
         }
-        // else if(argument[1][0]=='.'){
-        //     chdir(argument[1]);
-        // }
-        // else if(strcmp(argument[1],"..")==0){
-        //     char cwd[1024];
-        //     // gets the current directory
-        //     getcwd(cwd, sizeof(cwd));
-        //     int len = strlen(cwd);
-        //     int index = len-1;
-        //     while(cwd[index]!='/' && index>=0){
-        //         index--;
-        //     }
-        //     if(index==-1){
-        //         // printf("invalid");
-        //     }
-        //     else{
-        //         cwd[index] = '\0';
-        //         // printf("new place is %s\n",cwd);
-        //         chdir(cwd);
-        //     }
-        //     return 0;
-        // }
+        
         else{
             int len = strlen(argument[1]);
-            // printf("%s\n",argument[1]);
-            chdir(argument[1]);
+            
+            int eroor = chdir(argument[1]);
+            if(eroor<0){
+                perror(argument[1]);
+                return 1;
+            }
             return 0;
         }
     }
     else
-    {
+    {   
+        printf("you ahve given too many arguments");
         return 1;
     }
     

@@ -1,0 +1,20 @@
+ps
+history
+exit
+vim &
+sleep 1 &
+sleep 5 &
+sleep 5 &
+sleep 5 &
+exit
+sleep 10 &
+vim &
+pinfo 7897
+ps
+pinfo 478
+haha
+what
+ls
+ls -l
+why
+why
