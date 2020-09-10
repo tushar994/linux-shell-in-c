@@ -109,4 +109,5 @@ int print_history( int n,char* starting_working_directory){
         printf("%s",contents+index);
     }
     close(f_read);
+    return 0;
 }

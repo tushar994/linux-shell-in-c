@@ -162,6 +162,7 @@ int size_of(int flag_a, int flag_l ){
     printf("total %lld\n",total);
     // printf("flag_l : %d, flag_a : %d\n",flag_l,flag_a);
     closedir(dr); 
+    return 0;
 }
 
 int print_it(int flag_a, int flag_l ){
@@ -216,6 +217,7 @@ int print_it(int flag_a, int flag_l ){
     printf("\n");
     // printf("flag_l : %d, flag_a : %d\n",flag_l,flag_a);
     closedir(dr); 
+    return 0;
 }
 
 

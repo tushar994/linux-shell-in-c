@@ -1,5 +1,3 @@
-ls -la
-ls . -la
 ls .. -la
 exit
 nightswatch interrupt
@@ -18,3 +16,5 @@ exit
 
 sleep 1 &
 ls   ;   echo dgewifug wgeoofugwef wegf; ls -la ;  echo "gwufg      hwouwfh" ; 
+echo eiwyfg wehfuewfgg     gfoweufgwe f ;; ls
+exit

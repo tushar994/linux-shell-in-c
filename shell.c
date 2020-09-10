@@ -63,7 +63,7 @@ int main(){
                 printf("\n");
             }
             else if(strcmp(words[0],"echo")==0){
-                echo_string(words, index-1, input);
+                echo_string(words, index-1, input[w]);
             }
             else if(strcmp(words[0],"cd")==0){
                 int k = change_dir(words, index-1,starting_working_directory);
