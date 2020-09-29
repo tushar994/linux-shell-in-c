@@ -29,6 +29,7 @@
 #include "history.h"
 #include "exit.h"
 #include "nightswatch.h"
+#include "envset.h"
 
 struct bg_process* first_bg;
 

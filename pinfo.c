@@ -1,6 +1,7 @@
 #include "headers.h"
 
-int print_pinfo(char* path[], int n){
+// if todo ==0 do normal, else return status
+int print_pinfo(char* path[], int n, int flag){
     char stat_path[1000];
     strcpy(stat_path,"/proc/");
     if(n==1){
@@ -41,7 +42,16 @@ int print_pinfo(char* path[], int n){
         words[index] = strtok(NULL, " ");
         index++;
     }
-
+    if(flag==1){
+        // printf("%s\n",words[2]);
+        if(strcmp(words[2],"R")==0 || strcmp(words[2],"S")==0 ){
+            printf("Running ");
+        }
+        else{
+            printf("Stopped ");
+        }
+        return 0;
+    }
     printf("pid --- %s\n",words[0]);
     printf("Process Status -- %s\n",words[2]);
     printf("memory -- %s\n", words[22]);

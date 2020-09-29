@@ -1,20 +1,20 @@
-ls .. -la
-exit
-nightswatch interrupt
-ls;
-ls ; 
-ls ; 
-ls ;        
+c
+clear
+alias c=clear
+c
+c
+clear
 vim &
 ps
-exit
-
-
-
-
-
-
-sleep 1 &
-ls   ;   echo dgewifug wgeoofugwef wegf; ls -la ;  echo "gwufg      hwouwfh" ; 
-echo eiwyfg wehfuewfgg     gfoweufgwe f ;; ls
-exit
+kill 1
+fkill 1
+kjob 1
+kjob 1 9
+ls
+clear
+sleep 5 &
+kjob 1 9
+clear
+clear
+sleep 5 &
+fg 1

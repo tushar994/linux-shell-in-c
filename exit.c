@@ -20,6 +20,7 @@ int exit_shell(){
             perror("exitting");
             flag = 1;
         }
+        // printf("pid is %d\n",copy->pid);
         copy = copy->next;
     }
     return flag;

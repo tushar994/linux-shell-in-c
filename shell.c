@@ -8,7 +8,7 @@ int main(){
     first_bg = (struct bg_process*)malloc(sizeof(struct bg_process));
     first_bg->previous = NULL;
     first_bg->next = NULL;
-    first_bg->pid = -1;
+    first_bg->pid = -10;
     // first_bg->command = NULL;
     char starting_working_directory[1024];
     getcwd(starting_working_directory, 1024);
@@ -24,6 +24,15 @@ int main(){
         print_prompt(starting_working_directory);
 
         int linelen = getline(&commmand_line_line, &linecap, stdin);
+        if(linelen==-1){
+            int outcome = exit_shell();
+            if(outcome==0){
+                return 0;
+            }
+            else{
+                printf("couldn't exit\n");
+            }
+        }
         int length_input = strlen(commmand_line_line);
 
         commmand_line_line[length_input-1] = '\0';
@@ -48,15 +57,21 @@ int main(){
             }
             if(words[0]==NULL){}
             else if(length_current_command==1){}
-            else if(strcmp(words[0],"exit")==0){
+            else if(strcmp(words[0],"quit")==0){
                 int outcome = exit_shell();
                 if(outcome==0){
                     return 0;
                 }
                 else{
-                    printf("couldnt exit\n");
+                    printf("couldnt quit\n");
                 }
                 // return 0;
+            }
+            else if(strcmp(words[0],"overkill")==0){
+                int outcome = exit_shell();
+                if(outcome!=0){
+                    printf("couldnt kill all processes");
+                }
             }
             else if(strcmp(words[0],"pwd")==0){
                 print_pwd(starting_working_directory);
@@ -75,11 +90,29 @@ int main(){
                 list(words, index-1,starting_working_directory);
             }
             else if(strcmp(words[0],"pinfo")==0){
-                print_pinfo(words, index-1);
+                print_pinfo(words, index-1, 0);
             }
             else if(strcmp(words[0],"nightswatch")==0){
                 // printf("bruh\n");
                 handle_night(words,index-1,starting_working_directory,input[w]);
+            }
+            else if(strcmp(words[0],"setenv")==0){
+                to_set_env(words,index-1);
+            }
+            else if(strcmp(words[0],"unsetenv")==0){
+                to_unset_env(words,index-1);
+            }
+            else if(strcmp(words[0],"jobs")==0){
+                jobs(words,index-1);
+            }
+            else if(strcmp(words[0],"kjob")==0){
+                kjob(words,index-1);
+            }
+            else if(strcmp(words[0],"fg")==0){
+                bring_fg(words,index-1);
+            }
+            else if(strcmp(words[0],"bg")==0){
+                bring_bg(words,index-1);
             }
             
             else if(strcmp(words[0],"history")==0){
