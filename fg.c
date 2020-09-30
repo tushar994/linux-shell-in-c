@@ -20,8 +20,11 @@ int fg(char* path[], int n,char* starting_working_directory){
         return 0;
     }
     else{
-        
+        strcpy(fg_command,path[0]);
+        *current_fg_pid = forkReturn;
         pid_t okay = waitpid(forkReturn, &status, 0);
+        *current_fg_pid = -1;
+        fg_command[0] = '\0';
 
     }   
     return 0; 

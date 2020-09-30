@@ -2,7 +2,7 @@
 
 void handler_child(int sig)
 {
-    printf("handler\n");
+    // printf("handler\n");
     int w_st;
     pid_t pid = waitpid(-1, &w_st, WNOHANG);
 
@@ -20,15 +20,14 @@ void handler_child(int sig)
     }
     // write(STDOUT_FILENO, "bruh1\n ", strlen("bruh1\n "));
     if(copy!=NULL){
-        printf("here\n");
 
         // write(STDOUT_FILENO, "bruh\n ", strlen("bruh\n "));
         fprintf(stderr, "%s with pid %d exited with code %d\n", copy->command, copy->pid, w_st);
-        printf("what\n");
+
         struct bg_process* next = copy->next;
         struct bg_process* previous = copy->previous;
 
-        printf("what\n");
+        // printf("what\n");
         // if(previous!=NULL){
             previous->next = next;
         // }
@@ -37,13 +36,29 @@ void handler_child(int sig)
         }
         free(copy);
     }
-    printf("handler\n");
 }
 
+// for ^C
+void handler_c(int sig)
+{
+    return;
+}
 
+// for ^Z
+void handler_z(int sig){
+    if(*current_fg_pid == -1){
+        return;
+    }
+    add_bg(*current_fg_pid,fg_command);
+    kill(*current_fg_pid,SIGSTOP);
 
+    *current_fg_pid=-1;
+    fg_command[0] = '\0';
+}
 
 
 int define_all_signals(){
     signal(SIGCHLD, handler_child);
+    signal(SIGINT,handler_c);
+    signal(SIGTSTP, handler_z);
 }

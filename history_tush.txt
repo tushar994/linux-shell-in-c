@@ -1,20 +1,20 @@
-c
-clear
-alias c=clear
-c
-c
-clear
+sleep 5
+sleep 5 
+sleep 5 
 vim &
-ps
-kill 1
-fkill 1
+jobs
+jobs
+jbs
+jbs
+jobs
 kjob 1
 kjob 1 9
-ls
-clear
-sleep 5 &
-kjob 1 9
-clear
-clear
-sleep 5 &
-fg 1
+jobs
+jobs
+sleep 5 
+sleep 5
+sleep 10 &
+
+sleep 10
+sleep 10
+jobs

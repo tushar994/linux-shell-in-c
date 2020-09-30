@@ -75,13 +75,18 @@ int bring_fg(char* path[], int n){
         perror("fg");
         return 1;
     };
+    *current_fg_pid = copy->pid;
+    strcpy(fg_command,copy->command);
     kill(copy->pid, SIGCONT);
+
     pid_t okay = waitpid(copy->pid, &status, WUNTRACED);
+    *current_fg_pid=-1;
+    fg_command[0] = '\0';
     printf("exitted with %d\n",status);
     tcsetpgrp(STDIN_FILENO, getpid());
     signal(SIGTTIN, SIG_DFL);
     signal(SIGTTOU, SIG_DFL);
-    printf("leaves this \n");
+    // printf("leaves this \n");
     return 0;
 }
 int kjob(char* path[], int n){

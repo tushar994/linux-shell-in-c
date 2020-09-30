@@ -1,10 +1,11 @@
 #include "headers.h"
 
-
+// int current_fg_pid = -1;
 
 
 int main(){
-    
+    current_fg_pid = (int*)malloc(sizeof(int));
+    *current_fg_pid = -1;
     first_bg = (struct bg_process*)malloc(sizeof(struct bg_process));
     first_bg->previous = NULL;
     first_bg->next = NULL;
@@ -18,6 +19,7 @@ int main(){
     commmand_line_line = (char *)malloc(1000*sizeof(char));
     size_t linecap = 0;
     char* input[100];
+    define_all_signals();
     // input = (char *)malloc(1000*sizeof(char));
     while(1){
         // printf("starting\n");
@@ -47,7 +49,7 @@ int main(){
         input_index--;
         for(int w = 0;w<input_index;w++){
             char* words[1000];
-            int length_current_command = strlen(input[w]);
+            int length_current_command = strlen(input[w]);            
             words[0] = strtok(input[w], " ");
             // index will ccontain the number of arguments +1
             int index = 1;

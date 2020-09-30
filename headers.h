@@ -30,7 +30,10 @@
 #include "exit.h"
 #include "nightswatch.h"
 #include "envset.h"
+#include "signals.h"
 
 struct bg_process* first_bg;
+char fg_command[1024];
+int* current_fg_pid;
 
 #endif
