@@ -34,7 +34,7 @@
 #include "redirection.h"
 
 struct bg_process* first_bg;
-char fg_command[1024];
+char fg_command[10024];
 int* current_fg_pid;
 int* second_dir_has_happened;
 int* our_gpid;

@@ -23,7 +23,7 @@ int fg(char* path[], int n,char* starting_working_directory){
         return 1;
     }
     else if (forkReturn == 0){
-        // setpgid(0,0);
+        setpgid(0,0);
         // printf("child: %d\n",getpid());
         // signal(SIGINT,handler_cdhf);
         // signal(SIGTSTP, handler_z);
@@ -37,17 +37,23 @@ int fg(char* path[], int n,char* starting_working_directory){
         return 0;
     }
     else{
-
+        
         strcpy(fg_command,path[0]);
+        for(int i=1;i<n;i++){
+            strcat(fg_command,path[i]);
+        }
         *current_fg_pid = forkReturn;
         // printf("parent: %d\n",getpid());
-        // signal(SIGTTOU, SIG_IGN);
-        // signal(SIGTTIN, SIG_IGN);
-        // tcsetpgrp(STDIN_FILENO, forkReturn);
+        signal(SIGTTOU, SIG_IGN);
+        signal(SIGTTIN, SIG_IGN);
+        tcsetpgrp(STDIN_FILENO, forkReturn);
         pid_t okay = waitpid(forkReturn, &status, WUNTRACED);
-        // tcsetpgrp(STDIN_FILENO, getpgrp());
-        // signal(SIGTTOU, SIG_DFL);
-        // signal(SIGTTIN, SIG_DFL);
+        tcsetpgrp(STDIN_FILENO, getpgrp());
+        signal(SIGTTOU, SIG_DFL);
+        signal(SIGTTIN, SIG_DFL);
+        if(WIFSTOPPED(status)){
+            add_bg(forkReturn,path,n);
+        }
         *current_fg_pid = -1;
         fg_command[0] = '\0';
 

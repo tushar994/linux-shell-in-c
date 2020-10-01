@@ -22,7 +22,7 @@ void handler_child(int sig)
     if(copy!=NULL){
 
         // write(STDOUT_FILENO, "bruh\n ", strlen("bruh\n "));
-        fprintf(stderr, "%s with pid %d exited with code %d\n", copy->command, copy->pid, w_st);
+        fprintf(stderr, "%s with pid %d exited with code %d\n", copy->command, copy->pid, WEXITSTATUS(w_st));
 
         struct bg_process* next = copy->next;
         struct bg_process* previous = copy->previous;
@@ -41,29 +41,38 @@ void handler_child(int sig)
 // for ^C
 void handler_c(int sig)
 {
-
+    printf("hdhe\n");
     if(*current_fg_pid != -1){
         kill(*current_fg_pid,sig);
         *current_fg_pid = 1;
         return;
     }
     else{
-        
-        return;
+        return; 
     }
 }
 
 // for ^Z
 void handler_z(int sig){
+    // printf("hdhe\n");
     if(*current_fg_pid == -1){
         return;
     }
-    add_bg(*current_fg_pid,fg_command);
+    char* pass[1];
+    pass[0] = (char*)malloc(1000*sizeof(char));
+    strcpy(pass[0],fg_command);
+    // printf("%d\n",*current_fg_pid);
+    add_bg(*current_fg_pid,pass,1);
 
+    free(pass[0]);
+    if(setpgid(*current_fg_pid,0)<0){
+        perror("setting");
+    } 
     kill(*current_fg_pid,sig);
 
+
     *current_fg_pid=-1;
-    fg_command[0] = '\0';
+    // fg_command[0] = '\0';
 }
 
 

@@ -13,6 +13,6 @@ int bring_fg(char* path[], int n);
 int kjob(char* path[], int n);
 int jobs(char* path[], int n);
 int bg(char* path[], int n,char* starting_working_directory,char* command);
-void add_bg(pid_t pid, char* command);
+void add_bg(pid_t pid, char* command[] , int n);
 
 #endif
