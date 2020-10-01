@@ -225,7 +225,7 @@ int list(char* path[], int n,char* starting_working_directory){
       // Pointer for directory entry 
     char starting_working[1024];
     getcwd(starting_working, sizeof(starting_working));
-    // printf("%s\n",starting_working);
+    // printf("what the fuck\n");
 
 
     int flag_a = 0;

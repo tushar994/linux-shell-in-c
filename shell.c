@@ -4,7 +4,7 @@
 
 
 int exec_command(char* input, char* starting_working_directory){
-    
+    // printf("what\n");
     char* words[1000];
     int length_current_command = strlen(input); 
     words[0] = strtok(input, " ");
@@ -46,6 +46,7 @@ int exec_command(char* input, char* starting_working_directory){
         // }
     }
     else if(strcmp(words[0],"ls")==0){
+        printf("bruh\n");
         list(words, index-1,starting_working_directory);
     }
     else if(strcmp(words[0],"pinfo")==0){
@@ -62,7 +63,7 @@ int exec_command(char* input, char* starting_working_directory){
         to_unset_env(words,index-1);
     }
     else if(strcmp(words[0],"jobs")==0){
-        printf("jobs\n");
+        // printf("jobs\n");
         jobs(words,index-1);
     }
     else if(strcmp(words[0],"kjob")==0){
@@ -135,6 +136,11 @@ int exec_command(char* input, char* starting_working_directory){
 
 
 int main(){
+    our_gpid = (int*)malloc(sizeof(int));
+    *our_gpid = getpid();
+    second_dir_has_happened = (int*)malloc(sizeof(int));
+    *second_dir_has_happened = 0;
+
     int Standard_in = dup(STDIN_FILENO);
     int Standard_out = dup(STDOUT_FILENO);
     current_fg_pid = (int*)malloc(sizeof(int));
@@ -211,12 +217,11 @@ int main(){
 
 
                 int status = redirection(piped[pip],input_file, output_file, &input_flag, &output_flag);
-                
                 if(status!=1){
                     exec_command(piped[pip],starting_working_directory);
                 }
 
-                    dup2(flag[0],STDIN_FILENO);
+                dup2(flag[0],STDIN_FILENO);
                 close(flag[0]);
 
             }

@@ -1,20 +1,20 @@
-echo what | wc -l
-
-echo what | wc
-echo what | wc
-echo what | wc -c
-echo what| wc -c
-cd test
-echo bruh > 1.txt
-cat < 1.txt | wc
-cat < 1.txt | wc | wc
-cd test
-cat 1.xt
-cat 1.txt
-cat 1.txt | cat > 2.txt
-cat 2.txt
-cd test
-cat < 1.txt | cat > 2.txt ; cat < 1.txt | cat >> 2.txt
-cat 2.txt
-echo abcd | wc
-echo abcd | wc | wc
+[
+sleep 5
+sleep 5
+[A[
+sleep 15
+sleep 15
+jobs
+ps
+sleep 15 &
+sleep 15 
+sleep 15
+ps
+sleep 15
+ps
+sleep 15
+ps
+sleep 15
+jobs
+sleep 15
+jobs

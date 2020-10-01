@@ -118,4 +118,5 @@ int redirection(char* command, char* input_file, char* output_file, int* input, 
         }
     }
     // printf("%s\n",command);
+    return 0;
 }

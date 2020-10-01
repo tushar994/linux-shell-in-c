@@ -41,7 +41,16 @@ void handler_child(int sig)
 // for ^C
 void handler_c(int sig)
 {
-    return;
+
+    if(*current_fg_pid != -1){
+        kill(*current_fg_pid,sig);
+        *current_fg_pid = 1;
+        return;
+    }
+    else{
+        
+        return;
+    }
 }
 
 // for ^Z
@@ -50,7 +59,8 @@ void handler_z(int sig){
         return;
     }
     add_bg(*current_fg_pid,fg_command);
-    kill(*current_fg_pid,SIGSTOP);
+
+    kill(*current_fg_pid,sig);
 
     *current_fg_pid=-1;
     fg_command[0] = '\0';
@@ -60,5 +70,6 @@ void handler_z(int sig){
 int define_all_signals(){
     signal(SIGCHLD, handler_child);
     signal(SIGINT,handler_c);
+    // signal(SIGTSTP, handler_z);
     signal(SIGTSTP, handler_z);
 }

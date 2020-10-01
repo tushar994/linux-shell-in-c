@@ -82,7 +82,7 @@ int bring_fg(char* path[], int n){
     pid_t okay = waitpid(copy->pid, &status, WUNTRACED);
     *current_fg_pid=-1;
     fg_command[0] = '\0';
-    printf("exitted with %d\n",status);
+    // printf("exitted with %d\n",status);
     tcsetpgrp(STDIN_FILENO, getpid());
     signal(SIGTTIN, SIG_DFL);
     signal(SIGTTOU, SIG_DFL);

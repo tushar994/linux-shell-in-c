@@ -36,5 +36,8 @@
 struct bg_process* first_bg;
 char fg_command[1024];
 int* current_fg_pid;
+int* second_dir_has_happened;
+int* our_gpid;
+char last_working_dir_that_was_in[1000];
 
 #endif
