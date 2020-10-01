@@ -8,7 +8,7 @@ supports ';', piping and redirection (<, > , >>).
 
 signals CTRL+Z and CTRL+C are handled.
 
-The built in commands are :-- `ls (-al)`, `echo`, `pwd`, `cd`, `pinfo`, `history`, `nightswatch`(only `interrupt`), `setenv var [value]`, `unsetenv var`, `jobs` `kjob <job number> <signal number>` , `fg <job number>`, `bg <job number>`, `overkill`, `quit`.
+The built in commands are :-- `ls (-al)`, `echo`, `pwd`, `cd`, `pinfo`, `history`, `nightswatch`(both `interrupt` and `newborn`), `setenv var [value]`, `unsetenv var`, `jobs` `kjob <job number> <signal number>` , `fg <job number>`, `bg <job number>`, `overkill`, `quit`.
 
 
 
