@@ -14,15 +14,17 @@ int print_pinfo(char* path[], int n, int flag){
         strcat(stat_path,path[1]);
     }
     else{
-        printf("invalid number of arguments\n");
+        fprintf(stderr,"invalid number of arguments\n");
         return 1;
     }
 
     strcat(stat_path, "/stat");
+
     FILE* stat_line = fopen(stat_path, "r"); 
-    // printf("%s\n",stat_path);
+
     if(stat_line==NULL){
-        perror("pinfo: ");
+        // printf("why\n");
+        perror("pinfo ");
         return 1;
     }
 

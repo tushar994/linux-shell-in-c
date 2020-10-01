@@ -1,20 +1,20 @@
-sleep 5
-sleep 5 
-sleep 5 
-vim &
-jobs
-jobs
-jbs
-jbs
-jobs
-kjob 1
-kjob 1 9
-jobs
-jobs
-sleep 5 
-sleep 5
-sleep 10 &
+echo what | wc -l
 
-sleep 10
-sleep 10
-jobs
+echo what | wc
+echo what | wc
+echo what | wc -c
+echo what| wc -c
+cd test
+echo bruh > 1.txt
+cat < 1.txt | wc
+cat < 1.txt | wc | wc
+cd test
+cat 1.xt
+cat 1.txt
+cat 1.txt | cat > 2.txt
+cat 2.txt
+cd test
+cat < 1.txt | cat > 2.txt ; cat < 1.txt | cat >> 2.txt
+cat 2.txt
+echo abcd | wc
+echo abcd | wc | wc

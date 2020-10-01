@@ -31,6 +31,7 @@
 #include "nightswatch.h"
 #include "envset.h"
 #include "signals.h"
+#include "redirection.h"
 
 struct bg_process* first_bg;
 char fg_command[1024];

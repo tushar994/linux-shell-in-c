@@ -4,7 +4,7 @@
 
 int to_set_env(char* path[], int n){
     if(n!=2 && n!=3){
-        printf("incorrect number of aruments\n");
+        fprintf(stderr,"incorrect number of aruments\n");
     }
     else{
         char bruh[1000];
@@ -24,7 +24,7 @@ int to_set_env(char* path[], int n){
 
 int to_unset_env(char* path[], int n){
     if(n!=2){
-        printf("incorrect number of aruments\n");
+        fprintf(stderr,"incorrect number of aruments\n");
     }
     else{
         if(unsetenv(path[1])==-1){

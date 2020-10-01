@@ -14,7 +14,7 @@ int fg(char* path[], int n,char* starting_working_directory){
         // printf("%s\n",path[1]);
         execvp(path[0],path);
         // printf("%s\n",path[0]);
-        printf("Not a valid command\n");
+        fprintf(stderr,"Not a valid command\n");
         exit(0);
 
         return 0;

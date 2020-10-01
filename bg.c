@@ -9,14 +9,14 @@
 // };
 int bring_bg(char* path[], int n){
     if(n!=2){
-        printf("Not the right number of arguments\n");
+        fprintf(stderr,"Not the right number of arguments\n");
         return 1;
     }
     struct bg_process* copy = first_bg;
     int index = 1;
     copy = copy->next;
     if(copy==NULL){
-        printf("not a valid job number\n");
+        fprintf(stderr,"not a valid job number\n");
         return 1;
     }
     int index_no = 0;
@@ -29,7 +29,7 @@ int bring_bg(char* path[], int n){
         copy = copy->next;
         index++;
         if(copy==NULL){
-            printf("not a valid job number\n");
+            fprintf(stderr,"not a valid job number\n");
             return 1;
         }
     }
@@ -38,14 +38,14 @@ int bring_bg(char* path[], int n){
 }
 int bring_fg(char* path[], int n){
     if(n!=2){
-        printf("Not the right number of arguments\n");
+        fprintf(stderr,"Not the right number of arguments\n");
         return 1;
     }
     struct bg_process* copy = first_bg;
     int index = 1;
     copy = copy->next;
     if(copy==NULL){
-        printf("not a valid job number\n");
+        fprintf(stderr,"not a valid job number\n");
         return 1;
     }
     int index_no = 0;
@@ -58,7 +58,7 @@ int bring_fg(char* path[], int n){
         copy = copy->next;
         index++;
         if(copy==NULL){
-            printf("not a valid job number\n");
+            fprintf(stderr,"not a valid job number\n");
             return 1;
         }
     }
@@ -91,14 +91,14 @@ int bring_fg(char* path[], int n){
 }
 int kjob(char* path[], int n){
     if(n!=3){
-        printf("Not the right number of arguments\n");
+        fprintf(stderr,"Not the right number of arguments\n");
         return 1;
     }
     struct bg_process* copy = first_bg;
     int index = 1;
     copy = copy->next;
     if(copy==NULL){
-        printf("not a valid job number\n");
+        fprintf(stderr,"not a valid job number\n");
         return 1;
     }
     int index_no = 0;
@@ -117,7 +117,7 @@ int kjob(char* path[], int n){
         copy = copy->next;
         index++;
         if(copy==NULL){
-            printf("not a valid job number\n");
+            fprintf(stderr,"not a valid job number\n");
             return 1;
         }
     }

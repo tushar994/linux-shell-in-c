@@ -40,7 +40,7 @@ int change_dir(char* argument[], int n, char* starting_working_directory){
     }
     else
     {   
-        printf("you ahve given too many arguments");
+        fprintf(stderr,"you have given too many arguments");
         return 1;
     }
     

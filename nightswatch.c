@@ -31,13 +31,13 @@ int handle_night(char* path[], int n,char* starting_working_directory,char* comm
             nighwatch_newborn(5);
         }
         else{
-            printf("not a valid command\n");
+            fprintf(stderr,"not a valid command\n");
             return 1;
         }
     }
     else if(n==4){
         if(strcmp(path[1],"-n")!=0){
-            printf("not a right option\n");
+            fprintf(stderr,"not a right option\n");
             return 1;
         }
         int number = 0;
@@ -46,7 +46,7 @@ int handle_night(char* path[], int n,char* starting_working_directory,char* comm
             number*=10;
             int digit = (int)path[2][i] - (int)'0';
             if(digit>9||digit<0){
-                printf("not a valid number");
+                fprintf(stderr,"not a valid number");
                 return 1;
             }
             number+=digit;
@@ -60,12 +60,12 @@ int handle_night(char* path[], int n,char* starting_working_directory,char* comm
             nighwatch_newborn(number);
         }
         else{
-            printf("not a valid command\n");
+            fprintf(stderr,"not a valid command\n");
             return 1;
         }
     }
     else{
-        printf("wrong number of arguments\n");
+        fprintf(stderr,"wrong number of arguments\n");
         return 1;
     }
     // printf("exitted\n");
