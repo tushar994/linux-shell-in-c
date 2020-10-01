@@ -46,7 +46,7 @@ int exec_command(char* input, char* starting_working_directory){
         // }
     }
     else if(strcmp(words[0],"ls")==0){
-        printf("bruh\n");
+        // printf("bruh\n");
         list(words, index-1,starting_working_directory);
     }
     else if(strcmp(words[0],"pinfo")==0){

@@ -112,13 +112,24 @@ int kjob(char* path[], int n){
     int size1 = strlen(path[1]);
     for(int i=0;i<size1;i++){
         index_no*=10;
-        index_no += (int)path[1][i] - (int)'0';
+        int to_add = (int)path[1][i] - (int)'0';
+        if(to_add<0|| to_add>9){
+            fprintf(stderr,"not a number\n");
+            return 1;
+        }
+        index_no+=to_add;
+
     }
     int size2 = strlen(path[2]);
     int signal=0;
     for(int i=0;i<size2;i++){
         signal*=10;
-        signal += (int)path[2][i] - (int)'0';
+        int to_add = (int)path[2][i] - (int)'0';
+        if(to_add<0|| to_add>9){
+            fprintf(stderr,"not a number\n");
+            return 1;
+        }
+        signal+=to_add;
     }
     while(index!=index_no){
         copy = copy->next;

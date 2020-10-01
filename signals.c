@@ -41,7 +41,7 @@ void handler_child(int sig)
 // for ^C
 void handler_c(int sig)
 {
-    printf("hdhe\n");
+    // printf("hdhe\n");
     if(*current_fg_pid != -1){
         kill(*current_fg_pid,sig);
         *current_fg_pid = 1;
