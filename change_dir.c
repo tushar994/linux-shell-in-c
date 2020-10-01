@@ -48,6 +48,7 @@ int change_dir(char* argument[], int n, char* starting_working_directory){
             char ccwd[1024];
             getcwd(ccwd, 1024);
             chdir(last_working_dir_that_was_in);
+            print_pwd(starting_working_directory);
             strcpy(last_working_dir_that_was_in,ccwd);
             return 0;
         }
