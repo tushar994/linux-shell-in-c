@@ -29,7 +29,11 @@ $ ./tushell
 ## how to exit
 to exit 
 ```shell
-$ exit
+$ quit
+```
+or 
+```shell
+$ ^D
 ```
 inside the program. This kills all bbackground processes created by the program and then terminates. ^C might not do the same and can sometimes give errors
 
