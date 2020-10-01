@@ -4,9 +4,13 @@
 This is a linux shell implemented in c
 
 ## Functionality
-supports ';'.
+supports ';', piping and redirection (<, > , >>).
 
-The built in commands are :-- `ls (-al)`, `echo`, `pwd`, `cd`, `pinfo`, `history`, `nightswatch`(only `interrupt`).
+signals CTRL+Z and CTRL+C are handled.
+
+The built in commands are :-- `ls (-al)`, `echo`, `pwd`, `cd`, `pinfo`, `history`, `nightswatch`(only `interrupt`), `setenv var [value]`, `unsetenv var`, `jobs` `kjob <job number> <signal number>` , `fg <job number>`, `bg <job number>`, `overkill`, `quit`.
+
+
 
 it prints out a prompt in the form of `<username@system_name:curr_dir>`
 
@@ -32,11 +36,11 @@ inside the program. This kills all bbackground processes created by the program 
 ## Files Wise code breakdown
 
 - `shell.c` : this is where the shell runs from.
-- `bg.c` : where background processes are created, and where the SIGCHLD handler exists
+- `bg.c` : where background processes are created, and where jobs, kjob, fg, bg are implemented.
 - `fg.c` : where the foreground process runs from
 - `change_dir.c` : where cd is implemented
 - `echo.c` : where echo is implemented.
-- `exit.c` : where the exit function is implemented
+- `exit.c` : where the quit and overkill is implemented
 - `get_prompt.c` : where pwd and printing the prompt is implemented
 - `history.c` : this creates a file called `history_tush.txt` WHEREVER THE TERMINAL IS RUN FROM. So if you run it from two different locations, it gives different histories for them.
 - `ls.c` : where ls is outputted from. flags -l,-a,-la,-al are implemented. It outputs everything in a column (even if -l is not specified).
@@ -46,7 +50,7 @@ inside the program. This kills all bbackground processes created by the program 
 
 ## in-build commands
 
--`pwd`, `cd`, `echo` are in-built.
+-`pwd`, `cd`, `echo` are in-built. teh command `cd -` is valid and goes to the previous working directory.
 - `ls [-la]` is in-built. Even if `[-l]` is not specified, it outputs the file names in a column.
 - `pinfo [pid(optional)]` is in-built.
 - `history [number (optional)]` is in-built. by default it gives the last 10. if it has to give n previous commands, but it has stored less commands, then it outputs all the commands it can output. Number has to be a two-digit (or one-digit) number.
