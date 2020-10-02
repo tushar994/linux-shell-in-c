@@ -155,7 +155,10 @@ int kjob(char* path[], int n){
             return 1;
         }
     }
-    kill(copy->pid, signal);
+    if(kill(copy->pid, signal)==1){
+        perror("kill");
+        return 1;
+    }
     return 0;
 
 }

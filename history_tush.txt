@@ -1,1 +1,5 @@
-cd -
+sleep 50 &
+kjob 1 5657
+kjob 1 567
+sleep 20 &
+kjob 1 679758648
