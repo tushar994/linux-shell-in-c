@@ -44,7 +44,7 @@ void handler_c(int sig)
     // printf("hdhe\n");
     if(*current_fg_pid != -1){
         kill(*current_fg_pid,sig);
-        *current_fg_pid = 1;
+        *current_fg_pid = -1;
         return;
     }
     else{
@@ -81,4 +81,5 @@ int define_all_signals(){
     signal(SIGINT,handler_c);
     // signal(SIGTSTP, handler_z);
     signal(SIGTSTP, handler_z);
+    return 0;
 }

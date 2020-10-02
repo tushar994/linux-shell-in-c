@@ -3,7 +3,7 @@
 
 char* find_username();
 int find_systemname();
-void print_pwd(char* starting_working_directory);
+int print_pwd(char* starting_working_directory);
 void print_prompt( char* starting_working_directory);
 
 #endif

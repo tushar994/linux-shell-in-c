@@ -6,6 +6,7 @@ int exit_shell(){
     int flag = 0;
     while(copy!=NULL){
         pid_t pid = copy->pid;
+        printf("%d\n",pid);
         if(kill( pid ,SIGKILL)==0){
             printf("%s with pid %d has been killed\n",copy->command,copy->pid);
             struct bg_process* next = copy->next;

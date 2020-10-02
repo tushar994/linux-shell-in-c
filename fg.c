@@ -18,26 +18,22 @@ int fg(char* path[], int n,char* starting_working_directory){
     int status;
     pid_t forkReturn = fork();
     // printf("bruhhhh");
+    int return_val = 0;
     if(forkReturn <0){
         perror(path[0]);
         return 1;
     }
     else if (forkReturn == 0){
         setpgid(0,0);
-        // printf("child: %d\n",getpid());
-        // signal(SIGINT,handler_cdhf);
-        // signal(SIGTSTP, handler_z);
-        // signal(SIGTSTP, handler_cdhf);
-        // printf("%s\n",path[1]);
+        
         execvp(path[0],path);
-        // printf("%s\n",path[0]);
-        fprintf(stderr,"Not a valid command\n");
-        exit(0);
 
-        return 0;
+        fprintf(stderr,"Not a valid command\n");
+        exit(1);
+
+        return 1;
     }
     else{
-        
         strcpy(fg_command,path[0]);
         for(int i=1;i<n;i++){
             strcat(fg_command,path[i]);
@@ -51,12 +47,22 @@ int fg(char* path[], int n,char* starting_working_directory){
         tcsetpgrp(STDIN_FILENO, getpgrp());
         signal(SIGTTOU, SIG_DFL);
         signal(SIGTTIN, SIG_DFL);
+        // printf("%d\n",*bruhbruh);
         if(WIFSTOPPED(status)){
             add_bg(forkReturn,path,n);
+            return_val=1;
+        }
+        // printf("%d\n",WIFEXITED(status));
+        if(WIFEXITED(status)!=1){
+            // printf("bruh\n");
+            return_val=1;
+        }
+        if(WEXITSTATUS(status)!=0){
+            // printf("bruh22\n");
+            return_val=1;
         }
         *current_fg_pid = -1;
         fg_command[0] = '\0';
-
     }   
-    return 0; 
+    return return_val; 
 }

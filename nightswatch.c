@@ -96,6 +96,7 @@ int has_q_pressed(){
     }
     else if (return_val==-1){
         perror("q_press");
+        return 1;
     }
     return 0;
 

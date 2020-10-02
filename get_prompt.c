@@ -29,10 +29,14 @@ int find_systemname(){
 
 
 // this implements pwd command
-void print_pwd(char* starting_working_directory){
+int print_pwd(char* starting_working_directory){
     char cwd[1024];
     // gets the current directory
-    getcwd(cwd, sizeof(cwd));
+    char* bruh = getcwd(cwd, sizeof(cwd));
+    if(bruh==NULL){
+        perror("pwd");
+        return 1;
+    }
     // gets the sizes
     int size1 = strlen(cwd);
     int size2 = strlen(starting_working_directory);
@@ -61,6 +65,7 @@ void print_pwd(char* starting_working_directory){
             printf(" %s",cwd); 
         }
     }
+    return 0;
 }
 
 

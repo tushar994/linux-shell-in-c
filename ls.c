@@ -144,7 +144,7 @@ int size_of(int flag_a, int flag_l ){
     if (dr == NULL)  // opendir returns NULL if couldn't open directory 
     { 
         perror("ls :"); 
-        return 0; 
+        return 1; 
     } 
 
     // for readdir() 
@@ -173,7 +173,7 @@ int print_it(int flag_a, int flag_l ){
     if (dr == NULL)  // opendir returns NULL if couldn't open directory 
     { 
         perror("ls :"); 
-        return 0; 
+        return 1; 
     } 
 
     // for readdir() 

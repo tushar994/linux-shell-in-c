@@ -68,6 +68,7 @@ int bring_fg(char* path[], int n){
     if(copy->next!=NULL){
         copy->next->previous = copy->previous;
     }
+    int return_val = 0;
     // setpgid(copy->pid, getpid());
     signal(SIGTTIN, SIG_IGN);
     signal(SIGTTOU, SIG_IGN);
@@ -78,23 +79,38 @@ int bring_fg(char* path[], int n){
     };
     *current_fg_pid = copy->pid;
     strcpy(fg_command,copy->command);
-    kill(copy->pid, SIGCONT);
+    if(kill(copy->pid, SIGCONT)==1){
+        return_val=1;
+    }
     char* pass[1];
     pass[0] = (char*)malloc(1000*sizeof(char));
     strcpy(pass[0],fg_command);
     pid_t okay = waitpid(copy->pid, &status, WUNTRACED);
     // printf("exitted with %d\n",status);
-    tcsetpgrp(STDIN_FILENO, getpid());
+    if(tcsetpgrp(STDIN_FILENO, getpid())<0){
+        perror("fg");
+        return 1;
+    };
     signal(SIGTTIN, SIG_DFL);
     signal(SIGTTOU, SIG_DFL);
+    
     if(WIFSTOPPED(status)){
         add_bg(*current_fg_pid,pass,1);
+        return_val=1;
+    }
+    if(WIFEXITED(status)!=1){
+        // printf("bruh\n");
+        return_val=1;
+    }
+    if(WEXITSTATUS(status)!=0){
+        // printf("bruh22\n");
+        return_val=1;
     }
     *current_fg_pid=-1;
     fg_command[0] = '\0';
     free(pass[0]);
     // printf("leaves this \n");
-    return 0;
+    return return_val;
 }
 int kjob(char* path[], int n){
     if(n!=3){
@@ -157,6 +173,7 @@ int jobs(char* path[], int n){
         printf("%s [%d]\n", copy->command,copy->pid);
         copy = copy->next;
     }
+    return 0;
 }
 
 void add_bg(int pid, char* command[] , int n){
@@ -215,7 +232,7 @@ int bg(char* path[], int n,char* starting_working_directory,char* command){
             perror(path[0]);
         }
 
-        _exit(0);
+        _exit(1);
     }
     else{
         setpgid(forkReturn,0);

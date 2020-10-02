@@ -10,6 +10,7 @@ int exec_command(char* input, char* starting_working_directory){
     words[0] = strtok(input, " ");
     // index will ccontain the number of arguments +1
     int index = 1;
+    int return_value=0;
     while(words[index-1]!=NULL){
         words[index] = strtok(NULL, " ");
         index++;
@@ -23,6 +24,7 @@ int exec_command(char* input, char* starting_working_directory){
         }
         else{
             fprintf(stderr,"couldnt quit\n");
+            return_value=1;
         }
         // return 0;
     }
@@ -30,50 +32,51 @@ int exec_command(char* input, char* starting_working_directory){
         int outcome = exit_shell();
         if(outcome!=0){
             fprintf(stderr,"couldnt kill all processes");
+            return_value=1;
         }
     }
     else if(strcmp(words[0],"pwd")==0){
-        print_pwd(starting_working_directory);
+        return_value=print_pwd(starting_working_directory);
         printf("\n");
     }
     else if(strcmp(words[0],"echo")==0){
-        echo_string(words, index-1, input);
+        return_value=echo_string(words, index-1, input);
     }
     else if(strcmp(words[0],"cd")==0){
-        int k = change_dir(words, index-1,starting_working_directory);
+        return_value = change_dir(words, index-1,starting_working_directory);
         // if(k==1){
         //     printf("too many arguments");
         // }
     }
     else if(strcmp(words[0],"ls")==0){
         // printf("bruh\n");
-        list(words, index-1,starting_working_directory);
+        return_value=list(words, index-1,starting_working_directory);
     }
     else if(strcmp(words[0],"pinfo")==0){
-        print_pinfo(words, index-1, 0);
+        return_value=print_pinfo(words, index-1, 0);
     }
     else if(strcmp(words[0],"nightswatch")==0){
         // printf("bruh\n");
-        handle_night(words,index-1,starting_working_directory,input);
+        return_value=handle_night(words,index-1,starting_working_directory,input);
     }
     else if(strcmp(words[0],"setenv")==0){
-        to_set_env(words,index-1);
+        return_value=to_set_env(words,index-1);
     }
     else if(strcmp(words[0],"unsetenv")==0){
-        to_unset_env(words,index-1);
+        return_value=to_unset_env(words,index-1);
     }
     else if(strcmp(words[0],"jobs")==0){
         // printf("jobs\n");
-        jobs(words,index-1);
+        return_value=jobs(words,index-1);
     }
     else if(strcmp(words[0],"kjob")==0){
-        kjob(words,index-1);
+        return_value=kjob(words,index-1);
     }
     else if(strcmp(words[0],"fg")==0){
-        bring_fg(words,index-1);
+        return_value=bring_fg(words,index-1);
     }
     else if(strcmp(words[0],"bg")==0){
-        bring_bg(words,index-1);
+        return_value=bring_bg(words,index-1);
     }
     
     else if(strcmp(words[0],"history")==0){
@@ -83,6 +86,7 @@ int exec_command(char* input, char* starting_working_directory){
             if(strlen(words[1])>2){
                 valid = 0;
                 fprintf(stderr,"not the right argument");
+                return_value=1;
             }
             else if(strlen(words[1])==1){
                 int ones = (int)words[1][0] - (int)'0';
@@ -90,6 +94,7 @@ int exec_command(char* input, char* starting_working_directory){
                 if(ones<0 || ones>9){
                     valid = 0;
                     fprintf(stderr,"not the right argument");
+                    return_value=1;
                 }
                 else{
                     number =  ones;
@@ -101,10 +106,12 @@ int exec_command(char* input, char* starting_working_directory){
                 if(tens<0 || tens>9){
                     valid = 0;
                     fprintf(stderr,"not the right argument");
+                    return_value=1;
                 }
                 else if(ones<0 || ones>9){
                     valid = 0;
                     fprintf(stderr,"not the right argument");
+                    return_value=1;
                 }
                 else{
                     number = tens*10 + ones;
@@ -113,7 +120,7 @@ int exec_command(char* input, char* starting_working_directory){
             }
         }
         if(valid){
-            print_history( number, starting_working_directory);
+            return_value=print_history( number, starting_working_directory);
         }
     }
     else{
@@ -123,14 +130,15 @@ int exec_command(char* input, char* starting_working_directory){
             // }
             // printf("fg");
             // printf("%s\n",input);
-            fg(words, index-1,starting_working_directory);
+            return_value = fg(words, index-1,starting_working_directory);
         }
         else{
             // printf("back\n");
-            bg(words, index-1,starting_working_directory,input);
+            return_value = bg(words, index-1,starting_working_directory,input);
         }
         
     }
+    return return_value;
 }
 
 
@@ -191,6 +199,7 @@ int main(){
 
 
         char* piped[1000];
+        int statusfor_2 = 0;
         for(int w = 0;w<input_index;w++){
             piped[0] = strtok(input[w], "|");
             int piped_size=1;
@@ -218,7 +227,10 @@ int main(){
 
                 int status = redirection(piped[pip],input_file, output_file, &input_flag, &output_flag);
                 if(status!=1){
-                    exec_command(piped[pip],starting_working_directory);
+                    statusfor_2 = exec_command(piped[pip],starting_working_directory);
+                }
+                else{
+                    statusfor_2 = 1;
                 }
 
                 dup2(flag[0],STDIN_FILENO);
@@ -228,5 +240,12 @@ int main(){
             dup2(Standard_in,STDIN_FILENO);
             dup2(Standard_out,STDOUT_FILENO);
         }
+        if(statusfor_2){
+            printf(":'(");
+        }
+        else{
+            printf(":')");
+        }
     }
+
 }
