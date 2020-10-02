@@ -14,6 +14,8 @@ The built in commands are :-- `ls (-al)`, `echo`, `pwd`, `cd`, `pinfo`, `history
 
 it prints out a prompt in the form of `<username@system_name:curr_dir>`
 
+it prints `:')` before the prompt if the previous command executed normally, otherwise prints `:'(`
+
 can create background process using an `&` at the end of the command
 
 displays `<command name> with pid <pid> exited with code <exit code>` when a background process ends
